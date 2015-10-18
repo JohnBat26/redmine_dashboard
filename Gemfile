@@ -10,8 +10,8 @@ group :development do
 end
 
 group :test do
-  gem 'rspec', '~> 2.0'
-  gem 'rspec-rails'
+  gem 'rspec', '~> 2.11.0'
+  gem 'rspec-rails','~> 2.11.0'
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'fuubar'
