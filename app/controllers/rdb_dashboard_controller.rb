@@ -3,8 +3,8 @@ class RdbDashboardController < ApplicationController
   menu_item :dashboard
   before_filter :find_project, :authorize
   before_filter :setup_board, :except => :index
-  before_filter :find_issue, :only => [ :move, :update ]
-  before_filter :authorize_edit, :only => [ :move, :update ]
+  before_filter :find_issue, :only => [:move, :update]
+  before_filter :authorize_edit, :only => [:move, :update]
   after_filter :save_board_options
 
   def index
@@ -25,8 +25,10 @@ class RdbDashboardController < ApplicationController
     render_404
   end
 
-private
-  def board_type; nil end
+  private
+  def board_type;
+    nil
+  end
 
   def board
     clazz = board_type
@@ -73,12 +75,14 @@ private
   end
 
   def options_for(board)
-    User.current.pref["dashboard_#{@project.id}".to_s] ||= {}
+    rb_dashboard_setting = RbDashboardSetting.where(project_id: @project.id).first
+    rb_dashboard_setting && rb_dashboard_setting.settings ? rb_dashboard_setting.settings : {}
   end
 
   def save_options_for(options, board)
-    User.current.pref["dashboard_#{@project.id}"] = options
-    User.current.pref.save
+    rb_dashboard_setting = RbDashboardSetting.where(project_id: @project.id).first_or_create
+    rb_dashboard_setting.settings = options
+    rb_dashboard_setting.save
   end
 
   def session_id
