@@ -73,11 +73,12 @@ private
   end
 
   def options_for(board)
-    session["dashboard_#{@project.id}_#{User.current.id}_#{board}"] ||= {}
+    User.current.pref["dashboard_#{@project.id}".to_s] ||= {}
   end
 
   def save_options_for(options, board)
-    session["dashboard_#{@project.id}_#{User.current.id}_#{board}"] = options
+    User.current.pref["dashboard_#{@project.id}"] = options
+    User.current.pref.save
   end
 
   def session_id
