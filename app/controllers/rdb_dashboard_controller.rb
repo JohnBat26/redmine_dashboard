@@ -76,13 +76,22 @@ class RdbDashboardController < ApplicationController
 
   def options_for(board)
     rb_dashboard_setting = RbDashboardSetting.where(project_id: @project.id).first
-    rb_dashboard_setting && rb_dashboard_setting.settings ? rb_dashboard_setting.settings : {}
+    result = {}
+
+    if rb_dashboard_setting && rb_dashboard_setting.settings
+      rb_dashboard_setting.settings[:filters] = User.current.pref["dashboard_#{@project.id}"][:filters] if User.current.pref["dashboard_#{@project.id}"]
+      result = rb_dashboard_setting.settings
+    end
+    result
   end
+
 
   def save_options_for(options, board)
     rb_dashboard_setting = RbDashboardSetting.where(project_id: @project.id).first_or_create
     rb_dashboard_setting.settings = options
     rb_dashboard_setting.save
+    User.current.pref["dashboard_#{@project.id}"] = options
+    User.current.pref.save
   end
 
   def session_id
