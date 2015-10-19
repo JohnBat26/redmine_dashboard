@@ -61,7 +61,7 @@
 }
 
 .rdb-card .rdb-priority {
-	height: 12.6em;
+	/*height: 12.6em;*/
 }
 .rdb-card-title { float: left; }
 .rdb-card-header-data { padding-top: 2px; }
